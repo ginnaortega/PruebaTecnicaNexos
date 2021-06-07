@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LibreriaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Autor">
+    <Key>
+      <PropertyRef Name="IdAutor" />
+    </Key>
+    <Property Name="IdAutor" Type="Int32" Nullable="false" />
+    <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CiudadProcedencia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Libroes" Relationship="Self.FK_Libro_Autor" FromRole="Autor" ToRole="Libro" />
+  </EntityType>
+  <EntityType Name="Editorial">
+    <Key>
+      <PropertyRef Name="IdEditorial" />
+    </Key>
+    <Property Name="IdEditorial" Type="Int32" Nullable="false" />
+    <Property Name="Nombre" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DireccionCorrespondencia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MaximoLibros" Type="Int64" Nullable="false" />
+    <NavigationProperty Name="Libroes" Relationship="Self.FK_Libro_Editorial" FromRole="Editorial" ToRole="Libro" />
+  </EntityType>
+  <EntityType Name="Genero">
+    <Key>
+      <PropertyRef Name="IdGenero" />
+    </Key>
+    <Property Name="IdGenero" Type="Int32" Nullable="false" />
+    <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Libroes" Relationship="Self.FK_Libro_Genero" FromRole="Genero" ToRole="Libro" />
+  </EntityType>
+  <EntityType Name="Libro">
+    <Key>
+      <PropertyRef Name="IdLibro" />
+    </Key>
+    <Property Name="IdLibro" Type="Int32" Nullable="false" />
+    <Property Name="Titulo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Anio" Type="Int32" Nullable="false" />
+    <Property Name="IdGenero" Type="Int32" Nullable="false" />
+    <Property Name="NumeroPaginas" Type="Int64" Nullable="false" />
+    <Property Name="IdEditorial" Type="Int32" Nullable="false" />
+    <Property Name="IdAutor" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Autor" Relationship="Self.FK_Libro_Autor" FromRole="Libro" ToRole="Autor" />
+    <NavigationProperty Name="Editorial" Relationship="Self.FK_Libro_Editorial" FromRole="Libro" ToRole="Editorial" />
+    <NavigationProperty Name="Genero" Relationship="Self.FK_Libro_Genero" FromRole="Libro" ToRole="Genero" />
+  </EntityType>
+  <Association Name="FK_Libro_Autor">
+    <End Role="Autor" Type="Self.Autor" Multiplicity="1" />
+    <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Autor">
+        <PropertyRef Name="IdAutor" />
+      </Principal>
+      <Dependent Role="Libro">
+        <PropertyRef Name="IdAutor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Libro_Editorial">
+    <End Role="Editorial" Type="Self.Editorial" Multiplicity="1" />
+    <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Editorial">
+        <PropertyRef Name="IdEditorial" />
+      </Principal>
+      <Dependent Role="Libro">
+        <PropertyRef Name="IdEditorial" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Libro_Genero">
+    <End Role="Genero" Type="Self.Genero" Multiplicity="1" />
+    <End Role="Libro" Type="Self.Libro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Genero">
+        <PropertyRef Name="IdGenero" />
+      </Principal>
+      <Dependent Role="Libro">
+        <PropertyRef Name="IdGenero" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LibreriaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Autors" EntityType="Self.Autor" />
+    <EntitySet Name="Editorials" EntityType="Self.Editorial" />
+    <EntitySet Name="Generoes" EntityType="Self.Genero" />
+    <EntitySet Name="Libroes" EntityType="Self.Libro" />
+    <AssociationSet Name="FK_Libro_Autor" Association="Self.FK_Libro_Autor">
+      <End Role="Autor" EntitySet="Autors" />
+      <End Role="Libro" EntitySet="Libroes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Libro_Editorial" Association="Self.FK_Libro_Editorial">
+      <End Role="Editorial" EntitySet="Editorials" />
+      <End Role="Libro" EntitySet="Libroes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Libro_Genero" Association="Self.FK_Libro_Genero">
+      <End Role="Genero" EntitySet="Generoes" />
+      <End Role="Libro" EntitySet="Libroes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
