@@ -1,0 +1,17 @@
+USE Libreria
+GO
+
+IF OBJECT_ID (N'dbo.Autor', N'U') IS NOT NULL  
+ DROP TABLE dbo.Autor
+GO
+
+
+CREATE TABLE Autor (
+ IdAutor INT NOT NULL IDENTITY(1,1),
+ Nombre VARCHAR (200) NOT NULL,
+ FechaNacimiento DATE NOT NULL,
+ CiudadProcedencia VARCHAR(100) NOT NULL,
+ Email VARCHAR(50) NOT NULL,
+ CONSTRAINT PK_Autor PRIMARY KEY NONCLUSTERED (IdAutor)
+
+)
